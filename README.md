@@ -73,11 +73,16 @@ The group chat/CQ log is at <https://aprsph.net/cq>.
 
 # Supported bot commands
 
-- **NET (space) message** - This adds the user to the day's log (refreshes every midnight at the machine's local time). It also logs the timestamp, callsign, and message to a file that can be posted on the web. See http://aprs.dx1arm.net for example.
-- **CQ (space) message** - This sends the message to all stations currently checked into the net. It also saves the timestamp, callsign, and message to a file that can be posted on the web. See http://cq.dx1arm.net for example.
-- **LIST** - returns a list of stations currently checked into the net.
-- **LOG** - Returns the last 3 net checkins and their messages.
-- **LAST** - Returns the last 3 CQ messages
+- **CQ [space] your message** to send a message to everyone checked in for the day. This also adds you to the net log, and you will subsequently receive any CQ messages received by APRSPH thereafter. Subsequent CQ messages will also be sent to everyone in the list.
+- **NET [space] your message** will quietly join you into the daily net. This will not alert everyone in the net, but your message will be logged below. The message is optional. Sending NET without a message after will still log your callsign into the net and the recipient list.
+- **LIST** to view the current day's list of checked-in stations.
+- **LAST** to see the last 5 messages (use LAST10 for 10 messages or LAST15 for 15 messages).
+- **MINE** to view the recent CQ/NET messages sent by your own station to the net in the current month. You may include a callsign-ssid to review the last messages sent by that station (e.g., MINE DU2XXR-7). Use MINE10 or MINE15 for 10 or 15 messages, respectively.
+- **SEARCH [space] word or phrase** to find the last 5 messages from the month that contain the word or phrase. SEARCH10 or SEARCH15 to fetch 10 or 15 messages, respectively
+- **?APRST** or ?PING? to get a message with the path/s your packet took to the bot.
+- **?APRSM** or MSG to retrieve the last 5 messages sent to your callsign+ssid, using the aprs.fi API. Add a callsign-ssid after to retrieve messages directed to that callsign. Example: ?APRSM DU2XXR-7
+- **HELP** for a list of other commands.
+- **IC** - Set of commands that let the user draft a longer piece of message (multiple lines), then publish these onto a web log and simultaneously sent to a pre-designated station and/or email. 
 - **SMS (space) XXXXXXXXXXX (space) Message** - Sends a text message the the number XXXXXXXXXXX along with the message. This supports replies or new messages from SMS users by sending @CALLSIGN-SSID to the gateway number. Currently, the script supports numbers in the Philippines, since that is where I operate. This requires gammu-smsd daemon. Some modems might have issue processing received messages, but I have found that setting AT+CNMI to 1,2,0,0 works.
 - **SMSALIAS (space) XXXXXXXXXXX (space) Message** - Sets an alias so that the SMS recipient/sender number will no longer appear in subsequent messages.
 - **?APRST** or **?PING?** returns the path taken by the user's current ping message to the bot. 
@@ -85,9 +90,26 @@ The group chat/CQ log is at <https://aprsph.net/cq>.
 - **VERSION** returns the python version.
 - **HELP** returns a list of commands.
 - Commands to run server-side commands are also supported.
+- 
+# Changelog
+
+- 2023-01-28: Added the ?APRSM feature, which lets users retrieve their last 5 messages from aprs.fi.
+- 2023-02-02: Improved handling of longer messages in relay and retrieval (pagination into 2 messages so it is not truncated)
+- 2023-03-26: Page now refreshes every 10 minutes. APRSPH also automatically advises all checked in stations that the net is about to restart.
+- 2023-03-29: Improved reply for CQ and NET messages to include timestamp to better handle clients that ignore duplicate messages (because our messages don't have msgID).
+- 2023-04-04: Added UNSUBSCRIBE command.
+- 2023-04-12: Added queries for retrieving #APRSThursday entries. Also improved the MINE, SEARCH commands to cover current month plus archives.
+- 2023-04-16: Throttled self ?APRSM to 1 query per 5 minutes, since a duplicate query will result in a different response set every time because the responses will now be the last messages received. Update: Changed to 30 minutes, as of 2023-05-04.
+- 2023-06-05: Minor fix to the SMSALIAS code to accommodate for extra spaces which results in no match.
+- 2023-06-30: Fixes to the back-end code to deal with looping messages and garbage characters from igates that cause looping.
+- 2023-07-04: Added support for ?APRSP and ?APRSS commands.
+- 2023-09-04: Edits to replace brackets to avoid HTML tags in log
+- 2024-01-11: Changed relay mechanism to include original callsign and SSID as the sender instead of APRSPH. Started to support direct logging of APRSThursday net without ANSRVR relay.
+
+More updated commands and instructions at https://aprsph.net.
 
 # Contact information
-- **Email**: qsl@n2rac.com
+- **Email**: info@aprsph.net
 - **Telegram**: jangelor
-- **Web**: <https://n2rac.com>
+- **Web**: <https://aprsph.net>
 - **APRS**: DU2XXR-7
