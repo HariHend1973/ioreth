@@ -61,19 +61,19 @@ from os import path
 # more intuitive names for the files, but I can perhaps do so in a later code cleanup.
 
 timestr = time.strftime("%Y%m%d")
-filename1 = "/home/pi/ioreth/ioreth/ioreth/netlog-"+timestr
-filename2 = "home/pi/ioreth/ioreth/ioreth/netlog-msg"
-filename3 = "/home/pi/ioreth/ioreth/ioreth/netlog-"+timestr+"-cr"
-cqmesg = "/home/pi/ioreth/ioreth/ioreth/cqlog/cqmesg"
-cqlog = "/home/pi/ioreth/ioreth/ioreth/cqlog/cqlog"
-dusubs = "/home/pi/ioreth/ioreth/ioreth/dusubs"
-dusubslist = "/home/pi/ioreth/ioreth/ioreth/dusubslist"
+filename1 = "/home/hari/ioreth/ioreth/ioreth/netlog-"+timestr
+filename2 = "/home/hari/ioreth/ioreth/ioreth/netlog-msg"
+filename3 = "/home/hari/ioreth/ioreth/ioreth/netlog-"+timestr+"-cr"
+cqmesg = "/home/hari/ioreth/ioreth/ioreth/cqlog/cqmesg"
+cqlog = "/home/hari/ioreth/ioreth/ioreth/cqlog/cqlog"
+dusubs = "/home/hari/ioreth/ioreth/ioreth/dusubs"
+dusubslist = "/home/hari/ioreth/ioreth/ioreth/dusubslist"
 file = open(filename1, 'a')
 file = open(filename3, 'a')
-icmesg = "/home/pi/ioreth/ioreth/ioreth/eric/icmesg"
-iclist = "/home/pi/ioreth/ioreth/ioreth/eric/iclist"
-iclog = "/home/pi/ioreth/ioreth/ioreth/eric/eric"
-iclast = "/home/pi/ioreth/ioreth/ioreth/eric/iclast"
+icmesg = "/home/hari/ioreth/ioreth/ioreth/eric/icmesg"
+iclist = "/home/hari/ioreth/ioreth/ioreth/eric/iclist"
+iclog = "/home/hari/ioreth/ioreth/ioreth/eric/eric"
+iclast = "/home/hari/ioreth/ioreth/ioreth/eric/iclast"
 
 # Also Mmoved time string to place where it can be reset at midnight
 
@@ -147,7 +147,7 @@ class BotAprsHandler(aprs.Handler):
             "73": "73 🖖",
         }
 
-        if sourcetrunc == "APRSPH":
+        if sourcetrunc == "APRSID":
                   logger.info("Message from self. Stop processing." )
                   return
 
@@ -182,14 +182,14 @@ class BotAprsHandler(aprs.Handler):
 # Checking if duplicate message
 # If not, write msg to temp file
            dupecheck = sourcetrunc + ":" + qry + " " + args
-           if not dupecheck == open('/home/pi/ioreth/ioreth/ioreth/lastmsg').read():
+           if not dupecheck == open('/home/hari/ioreth/ioreth/ioreth/lastmsg').read():
                   logger.info("Message is not exact duplicate, now logging" )
 
-                  with open('/home/pi/ioreth/ioreth/ioreth/nettext', 'w') as g:
+                  with open('/home/hari/ioreth/ioreth/ioreth/nettext', 'w') as g:
                        data3 = "{} {}:{} *".format(time.strftime("%Y-%m-%d %H:%M:%S %Z"), sourcetrunc, args)
                        g.write(data3)
                        logger.info("Writing %s net message to netlog text", sourcetrunc)
-                       fout = open('/home/pi/ioreth/ioreth/ioreth/netlog-msg', 'a')
+                       fout = open('/home/hari/ioreth/ioreth/ioreth/netlog-msg', 'a')
                        fout.write(data3)
                        fout.write("\n")
                        fout.close()
@@ -208,7 +208,7 @@ class BotAprsHandler(aprs.Handler):
                       file.close()
 # If not in log, then add them
                  else:
-                      with open('/home/pi/ioreth/ioreth/ioreth/netlog', 'w') as f:
+                      with open('/home/hari/ioreth/ioreth/ioreth/netlog', 'w') as f:
                          f.write(sourcetrunc)
                          f.close()
                          logger.info("Writing %s checkin to netlog", source)
@@ -223,7 +223,7 @@ class BotAprsHandler(aprs.Handler):
 
 # Record the message somewhere to check if next message is dupe
            dupecheck = sourcetrunc + ":" + qry + " " + args
-           with open('/home/pi/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
+           with open('/home/hari/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
                 lasttext = args
                 g.write(dupecheck)
                 logger.info("Writing %s message somewhere to check for future dupes", sourcetrunc)
@@ -315,10 +315,10 @@ class BotAprsHandler(aprs.Handler):
            nocheckins = 0
 # Checking if duplicate message
            dupecheck = sourcetrunc + ":" + qry + " " + args
-           if not dupecheck == open('/home/pi/ioreth/ioreth/ioreth/lastmsg').read():
+           if not dupecheck == open('/home/hari/ioreth/ioreth/ioreth/lastmsg').read():
                   logger.info("Message is not exact duplicate, now logging" )
 # This logs the message into net text draft for adding into the message log.
-                  with open('/home/pi/ioreth/ioreth/ioreth/nettext', 'w') as cqm:
+                  with open('/home/hari/ioreth/ioreth/ioreth/nettext', 'w') as cqm:
                        if qry == "cq" :
                           data9 = "{} {}:{}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z"), sourcetrunc, args)
                        else :
@@ -326,7 +326,7 @@ class BotAprsHandler(aprs.Handler):
                        cqm.write(data9)
                        cqm.close()
                        logger.info("Writing %s CQ message to nettext", sourcetrunc)
-                       fout = open('/home/pi/ioreth/ioreth/ioreth/netlog-msg', 'a')
+                       fout = open('/home/hari/ioreth/ioreth/ioreth/netlog-msg', 'a')
                        fout.write(data9)
                        fout.write("\n")
                        fout.close()
@@ -336,14 +336,14 @@ class BotAprsHandler(aprs.Handler):
            if not os.path.isfile(filename3) :
                nocheckins = 1
                self.send_aprs_msg(sourcetrunc, "You are first in today's log." ) 
-               with open('/home/pi/ioreth/ioreth/ioreth/netlog', 'w') as nt:
+               with open('/home/hari/ioreth/ioreth/ioreth/netlog', 'w') as nt:
                    nt.write(sourcetrunc)
                    logger.info("Writing %S message to netlog", sourcetrunc)
 # Checking if duplicate message
                dupecheck = sourcetrunc + ":" + qry + " " + args
-               if not dupecheck == open('/home/pi/ioreth/ioreth/ioreth/lastmsg').read():
+               if not dupecheck == open('/home/hari/ioreth/ioreth/ioreth/lastmsg').read():
                    logger.info("Message is not exact duplicate, now logging" )
-                   with open('/home/pi/ioreth/ioreth/ioreth/nettext', 'w') as ntg:
+                   with open('/home/hari/ioreth/ioreth/ioreth/nettext', 'w') as ntg:
 # If not duplicate, this logs the message into net text draft for adding into the message log.
 
                         if qry == "cq" :
@@ -352,7 +352,7 @@ class BotAprsHandler(aprs.Handler):
                            data3 = "{} {}:{} {}".format(time.strftime("%Y-%m-%d %H:%M:%S %Z"), sourcetrunc, qry, args)
                         ntg.write(data3)
                         logger.info("Writing %s net message to netlog-msg", sourcetrunc)
-                        fout = open('/home/pi/ioreth/ioreth/ioreth/netlog-msg', 'a')
+                        fout = open('/home/hari/ioreth/ioreth/ioreth/netlog-msg', 'a')
                         fout.write(data3)
                         fout.write("\n")
                         fout.close()
@@ -364,7 +364,7 @@ class BotAprsHandler(aprs.Handler):
            file = open(filename1, 'r')
            search_word = sourcetrunc
            if not (search_word in file.read()):
-                with open('/home/pi/ioreth/ioreth/ioreth/netlog', 'w') as cqf:
+                with open('/home/hari/ioreth/ioreth/ioreth/netlog', 'w') as cqf:
                       cqf.write(sourcetrunc)
                       logger.info("CQ source not yet in net. Writing %s checkin to netlog", source)
 
@@ -380,7 +380,7 @@ class BotAprsHandler(aprs.Handler):
                       cqnet = 1
 #                      logger.info("Writing %s net message to netlog-msg", sourcetrunc)
 # Record the message somewhere to check if next message is dupe
-           with open('/home/pi/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
+           with open('/home/hari/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
                 dupecheck = sourcetrunc + ":" + qry + " " + args
                 g.write(dupecheck)
                 logger.info("Writing %s message somewhere to check for future dupes", sourcetrunc)
@@ -437,9 +437,9 @@ class BotAprsHandler(aprs.Handler):
            cqnet = 0
 # Checking if duplicate message
            dupecheck = sourcetrunc + ":" + qry + " " + args
-           if not dupecheck == open('/home/pi/ioreth/ioreth/ioreth/lastmsg').read():
+           if not dupecheck == open('/home/har/ioreth/ioreth/ioreth/lastmsg').read():
                   logger.info("Message is not exact duplicate, now logging" )
-                  icdraft = '/home/pi/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
+                  icdraft = '/home/hari/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
                   if not os.path.isfile(icdraft):
                        draftmsg = open(icdraft, 'w')
                        with open(icdraft, 'a') as draftmsg:
@@ -456,7 +456,7 @@ class BotAprsHandler(aprs.Handler):
                          cqm.close
 
 # Record the message somewhere to check if next message is dupe
-           with open('/home/pi/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
+           with open('/home/hari/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
                 dupecheck = sourcetrunc + ":" + qry + " " + args
 #                lasttext = args
                 g.write(dupecheck)
@@ -470,7 +470,7 @@ class BotAprsHandler(aprs.Handler):
 
         elif qry == "icancel":
            sourcetrunc = source.replace('*','')
-           icdraft = '/home/pi/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
+           icdraft = '/home/hari/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
            if os.path.isfile(icdraft):
               os.remove(icdraft)
               self.send_aprs_msg(sourcetrunc, "Report deleted. IC [space] msg to start new.")
@@ -479,7 +479,7 @@ class BotAprsHandler(aprs.Handler):
 
         elif qry == "icpub":
            sourcetrunc = source.replace('*','')
-           icdraft = '/home/pi/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
+           icdraft = '/home/hari/ioreth/ioreth/ioreth/eric/draft/' + sourcetrunc
            if not os.path.isfile(icdraft):
               self.send_aprs_msg(sourcetrunc, "No report to publish. IC [space] msg to start new.")
            if os.path.isfile(icdraft):
@@ -500,7 +500,7 @@ class BotAprsHandler(aprs.Handler):
               flast.close()
               os.remove(icdraft)
               logger.info("Deletig draft report from %s", sourcetrunc)
-              cmd = 'scp /home/pi/ioreth/ioreth/ioreth/eric/eric your target webserver here)/public_html/ic/index.html'
+              cmd = 'scp /home/hari/ioreth/ioreth/ioreth/eric/eric /var/www/botwww/index.html'
               os.system(cmd)
               logger.info("Uploading iclog to the web")
               self.send_aprs_msg(sourcetrunc, "Published the log messages to web.")
@@ -720,8 +720,8 @@ class BotAprsHandler(aprs.Handler):
              callnossid = sourcetrunc.split('-', 1)[0]
              SMS_DESTINATION = args[0:11]
              SMS_ALIAS = args[12:]
-             aliasscratch = "/home/pi/ioreth/ioreth/ioreth/smsaliasscratch/" + callnossid
-             aliasfile = "/home/pi/ioreth/ioreth/ioreth/smsalias/" + callnossid
+             aliasscratch = "/home/hari/ioreth/ioreth/ioreth/smsaliasscratch/" + callnossid
+             aliasfile = "/home/hari/ioreth/ioreth/ioreth/smsalias/" + callnossid
 # stop processing duplicates, since APRS sends messages multiple times.
              if not os.path.isfile(aliasscratch):
                  aliases = open(aliasscratch, 'w')
@@ -750,14 +750,14 @@ class BotAprsHandler(aprs.Handler):
         elif qry == "sms":
           sourcetrunc = source.replace('*','')
           callnossid = sourcetrunc.split('-', 1)[0]
-          SMS_TEXT = ("APRS msg fr " + sourcetrunc + " via APRSPH:\n\n" + args.split(' ', 1)[1] + "\n\n@" + sourcetrunc + " plus ur msg to reply. APRS MSGs ARE NOT PRIVATE!" )
+          SMS_TEXT = ("APRS msg fr " + sourcetrunc + " via APRSID:\n\n" + args.split(' ', 1)[1] + "\n\n@" + sourcetrunc + " plus ur msg to reply. APRS MSGs ARE NOT PRIVATE!" )
 # First set the characters after SMS as the initial destination
           SMS_DESTINATION = ""
 #          SMS_DESTINATION = args[0:11]
 # First check if using alias or not
           aliasfound = []
-          aliasfile = "/home/pi/ioreth/ioreth/ioreth/smsalias/" + callnossid
-          cellaliasfile = "/home/pi/ioreth/ioreth/ioreth/smsalias/CELLULAR"
+          aliasfile = "/home/hari/ioreth/ioreth/ioreth/smsalias/" + callnossid
+          cellaliasfile = "/home/hari/ioreth/ioreth/ioreth/smsalias/CELLULAR"
           smsoralias = args.split(' ', 1)[0]
           smsoraliasupper = smsoralias.upper()
 # Check cellular-initiated aliases first
@@ -810,7 +810,7 @@ class BotAprsHandler(aprs.Handler):
 # Check first if duplicate
           dupecheck = sourcetrunc + ":" + qry + " " + args
 
-          if not dupecheck == open('/home/pi/ioreth/ioreth/ioreth/lastmsg').read():
+          if not dupecheck == open('/home/hari/ioreth/ioreth/ioreth/lastmsg').read():
              logger.info("Received message for SMS that is not exact duplicate, now sending SMS" )
 
              if args == "":
@@ -819,7 +819,7 @@ class BotAprsHandler(aprs.Handler):
                  return
 
 
-             with open('/home/pi/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
+             with open('/home/hari/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
 #                   lasttext = args
                    g.write(dupecheck)
                    logger.info("Writing %s message somewhere to check for future dupes", sourcetrunc)
@@ -835,7 +835,7 @@ class BotAprsHandler(aprs.Handler):
              try:
 #                   os.system(sendsms)
                    self.send_aprs_msg(sourcetrunc, "SMS " + smsoralias +" -sending. Note: APRS msgs not private." )
-                   aliasfile = "/home/pi/ioreth/ioreth/ioreth/smsalias/" + callnossid
+                   aliasfile = "/home/hari/ioreth/ioreth/ioreth/smsalias/" + callnossid
                    smsoralias = args.split(' ', 1)[0]
                    if not os.path.isfile(aliasfile):
                          self.send_aprs_msg(sourcetrunc, "U may use alias.SMSALIAS 09XXXXXXXXX NAME to set.SMS NAME to send.")
@@ -859,7 +859,7 @@ class BotAprsHandler(aprs.Handler):
 #                                            1234567890123456789012345678901234567890123456789012345678901234567
             self.send_aprs_msg(sourcetrunc, "ERROR:CQ[space]msg to join,LIST to view,HELP or aprsph.net for info" )
             dupecheck = sourcetrunc + ":" + qry + " " + args
-            with open('/home/pi/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
+            with open('/home/hari/ioreth/ioreth/ioreth/lastmsg', 'w') as g:
                 lasttext = args
                 g.write(dupecheck)
                 logger.info("Writing %s message somewhere to check for future dupes", sourcetrunc)
@@ -879,19 +879,19 @@ class SystemStatusCommand(remotecmd.BaseRemoteCommand):
 
     def run(self):
 # These lines count the number of SMS sent and received
-        smsproc = "ls -l /var/spool/gammu/processed | grep total > /home/pi/ioreth/ioreth/ioreth/smsrxcount"
+        smsproc = "ls -l /var/spool/gammu/processed | grep total > /home/hari/ioreth/ioreth/ioreth/smsrxcount"
         smsrxcount = os.system(smsproc)
-        smssent = "ls -l /var/spool/gammu/sent | grep total > /home/pi/ioreth/ioreth/ioreth/smstxcount"
+        smssent = "ls -l /var/spool/gammu/sent | grep total > /home/hari/ioreth/ioreth/ioreth/smstxcount"
         smstxcount = os.system(smssent)
         
 
-        smsrxnum = open('/home/pi/ioreth/ioreth/ioreth/smsrxcount', 'r')
+        smsrxnum = open('/home/hari/ioreth/ioreth/ioreth/smsrxcount', 'r')
         smsrxcounts = smsrxnum.read()
         smsrxtotals1 = smsrxcounts.replace('total ','')
         smsrxtotals = smsrxtotals1.replace('\n','')
         smsrxnum.close()
 
-        smstxnum = open('/home/pi/ioreth/ioreth/ioreth/smstxcount', 'r')
+        smstxnum = open('/home/hari/ioreth/ioreth/ioreth/smstxcount', 'r')
         smstxcounts = smstxnum.read()
         smstxtotals1 = smstxcounts.replace('total ','')
         smstxtotals = smstxtotals1.replace('\n','')
@@ -1011,7 +1011,7 @@ class ReplyBot(AprsClient):
             # still run within the minute.
             timestr = time.strftime("%Y%m%d")
             timestrtxt = time.strftime("%m%d")
-            filename1 = "/home/pi/ioreth/ioreth/ioreth/netlog-"+timestr
+            filename1 = "/home/hari/ioreth/ioreth/ioreth/netlog-"+timestr
 
             self._last_cron_blns = 60 * int(now_time / 60.0) + random.randint(0, 30)
 
@@ -1082,7 +1082,7 @@ class ReplyBot(AprsClient):
 # Let cell user create an alias
                       
                       if smsstartupper == "ALIAS":
-                          cellaliasfile = "/home/pi/ioreth/ioreth/ioreth/smsalias/CELLULAR"
+                          cellaliasfile = "/home/hari/ioreth/ioreth/ioreth/smsalias/CELLULAR"
                           isbodyalias = len(smsreceived.split())
                           if isbodyalias > 1 :
                               cellownalias = smsreceived.split(' ', 1)[1]
@@ -1110,7 +1110,7 @@ class ReplyBot(AprsClient):
                               smsbody = "EMPTY MSG BODY"
                               logger.info("Message body not found. Sending empty")
 # Let's check if the sender has an alias, and if so we use that instead of the number for privacy.
-                          aliaspath = "/home/pi/ioreth/ioreth/ioreth/smsalias/"
+                          aliaspath = "/home/hari/ioreth/ioreth/ioreth/smsalias/"
                           aliascheck = aliaspath + callnossid[1:]
                           cellaliascheck = aliaspath + "CELLULAR"
 # Let's check if the sender has a self-assigned alias
@@ -1195,8 +1195,8 @@ class ReplyBot(AprsClient):
                     logger.info("Cleaning up SMS inbox.")
 
 # These lines are for maintaining the net logs
-        if os.path.isfile('/home/pi/ioreth/ioreth/ioreth/netlog'):
-           file = open('/home/pi/ioreth/ioreth/ioreth/netlog', 'r')
+        if os.path.isfile('/home/hari/ioreth/ioreth/ioreth/netlog'):
+           file = open('/home/hari/ioreth/ioreth/ioreth/netlog', 'r')
            data20 = file.read()
            file.close()
            fout = open(filename1, 'a')
@@ -1206,7 +1206,7 @@ class ReplyBot(AprsClient):
            fout.write(data20)
            fout.write("\n")
            logger.info("Copying latest checkin into day's net logs")
-           os.remove('/home/pi/ioreth/ioreth/ioreth/netlog')
+           os.remove('/home/hari/ioreth/ioreth/ioreth/netlog')
            logger.info("Deleting net log scratch file")
            timestrtxt = time.strftime("%m%d")
            file = open(filename1, 'r')
@@ -1262,21 +1262,21 @@ class ReplyBot(AprsClient):
            self._aprs.send_aprs_msg("BLN9NET", "Full logs and more info at https://aprsph.net")
            logger.info("Sending new log text to BLN7NET to BLN8NET after copying over to daily log")
 
-        if os.path.isfile('/home/pi/ioreth/ioreth/ioreth/nettext'):
-#           file = open('/home/pi/ioreth/ioreth/ioreth/nettext', 'r')
+        if os.path.isfile('/home/hari/ioreth/ioreth/ioreth/nettext'):
+#           file = open('/home/hari/ioreth/ioreth/ioreth/nettext', 'r')
 #           data4 = file.read()  
 #           file.close()
 # Deprecated the lines below. We are now writing the login text directly, since the previous method resulted in
 # Simultaneous checkins not being logged properly. The purpose now is to use the nettext file as a flag whether to
 # upload the net logs to the web.
-#           fout = open('/home/pi/ioreth/ioreth/ioreth/netlog-msg', 'a')
+#           fout = open('/home/hari/ioreth/ioreth/ioreth/netlog-msg', 'a')
 #           fout.write(data4)
 #           fout.write("\n")
 #           fout.close()
 #           logger.info("Copying latest checkin message into cumulative net log")
-           os.remove('/home/pi/ioreth/ioreth/ioreth/nettext')
+           os.remove('/home/hari/ioreth/ioreth/ioreth/nettext')
            logger.info("Deleting net text scratch file")
-           cmd = 'scp /home/pi/ioreth/ioreth/ioreth/netlog-msg (your target webserver here)/public_html/index.html'
+           cmd = 'scp /home/hari/ioreth/ioreth/ioreth/netlog-msg /var/www/botwww/index.html'
            os.system(cmd)
            logger.info("Uploading logfile to the web")
 
